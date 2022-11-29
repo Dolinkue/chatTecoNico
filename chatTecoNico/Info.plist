@@ -21,5 +21,9 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Please allow access to take a picture</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>dejame usar las fotos gato</string>
 </dict>
 </plist>
