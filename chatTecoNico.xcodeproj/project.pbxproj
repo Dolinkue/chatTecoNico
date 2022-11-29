@@ -34,6 +34,7 @@
 		82AA5501293562A400F442D6 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AA5500293562A400F442D6 /* NewConversationViewController.swift */; };
 		82AA55032935637A00F442D6 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AA55022935637A00F442D6 /* ProfileViewController.swift */; };
 		82AA550529362B9100F442D6 /* Extencion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AA550429362B9100F442D6 /* Extencion.swift */; };
+		82AA55072936A9A900F442D6 /* DataBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AA55062936A9A900F442D6 /* DataBaseManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		82AA5500293562A400F442D6 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		82AA55022935637A00F442D6 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		82AA550429362B9100F442D6 /* Extencion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extencion.swift; sourceTree = "<group>"; };
+		82AA55062936A9A900F442D6 /* DataBaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				82AA550429362B9100F442D6 /* Extencion.swift */,
+				82AA55062936A9A900F442D6 /* DataBaseManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 				82AA55032935637A00F442D6 /* ProfileViewController.swift in Sources */,
 				82AA54C42935522A00F442D6 /* SceneDelegate.swift in Sources */,
 				82AA54FD2935626800F442D6 /* PhotoViewerViewController.swift in Sources */,
+				82AA55072936A9A900F442D6 /* DataBaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

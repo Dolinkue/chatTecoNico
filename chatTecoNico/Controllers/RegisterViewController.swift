@@ -152,22 +152,36 @@ class RegisterViewController: UIViewController {
         lastNameField.resignFirstResponder()
         // comprueba los datos
         guard let email = emailField.text, let password = passwordField.text, !email.isEmpty, !password.isEmpty, password.count >= 6, let firstName = nameField.text, let lastName = lastNameField.text, !lastName.isEmpty, !firstName.isEmpty else {
-            alertUserLoginError()
+            alertUserLoginError(message: "the user already exist")
             return
         }
-        
-        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { authDataResult, error in
-            guard let result = authDataResult, error == nil else {
-                print("error")
+        DataBaseManager.shared.userExists(with: email) {[weak self] exist in
+            guard let strongSelf = self else {
                 return
             }
-            let user = result.user
-            print("\(user)")
+            guard !exist else {
+                //user already exist
+                return
+            }
+            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { authDataResult, error in
+                
+                guard authDataResult != nil, error == nil else {
+                    print("error")
+                    return
+                }
+                
+                DataBaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email))
+                
+                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+                
+            }
         }
+        
+ 
     }
     
-    func alertUserLoginError() {
-        let alert = UIAlertController(title: "ERROR", message: "enter all info", preferredStyle: .alert)
+    func alertUserLoginError(message: String = "enter all info") {
+        let alert = UIAlertController(title: "ERROR", message: message , preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel))
         present(alert, animated: true)
     }
