@@ -152,7 +152,7 @@ class RegisterViewController: UIViewController {
         lastNameField.resignFirstResponder()
         // comprueba los datos
         guard let email = emailField.text, let password = passwordField.text, !email.isEmpty, !password.isEmpty, password.count >= 6, let firstName = nameField.text, let lastName = lastNameField.text, !lastName.isEmpty, !firstName.isEmpty else {
-            alertUserLoginError(message: "the user already exist")
+            
             return
         }
         DataBaseManager.shared.userExists(with: email) {[weak self] exist in
@@ -161,6 +161,7 @@ class RegisterViewController: UIViewController {
             }
             guard !exist else {
                 //user already exist
+                strongSelf.alertUserLoginError(message: "the user already exist")
                 return
             }
             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { authDataResult, error in

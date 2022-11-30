@@ -23,10 +23,10 @@ final class DataBaseManager {
 extension DataBaseManager {
     
     public func userExists(with email: String, completion: @escaping ((Bool)-> Void)) {
-        // buscamos si el usuario existe
+        // corregir error del database por el .
         var safeEmail = email.replacingOccurrences(of: ".", with: "-")
-        safeEmail = safeEmail.replacingOccurrences(of: ".", with: "-")
         
+        // buscamos si el usuario existe
         database.child(safeEmail).observeSingleEvent(of: .value) { snapshot in
             guard snapshot.value as? String != nil else {
                 completion(false)
