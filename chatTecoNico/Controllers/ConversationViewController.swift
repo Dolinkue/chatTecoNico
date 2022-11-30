@@ -7,8 +7,11 @@
 
 import UIKit
 import FirebaseAuth
+import JGProgressHUD
 
 class ConversationViewController: UIViewController {
+    
+    private let spinner = JGProgressHUD(style: .dark)
     
     private let tableView: UITableView = {
         let table = UITableView()
@@ -29,16 +32,28 @@ class ConversationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(didTabComposeButton))
         view.addSubview(tableView)
         view.addSubview(noConversationsLabel)
         setupTable()
         fetchConversations()
-        // Do any additional setup after loading the view.
+    }
+    
+    @objc private func didTabComposeButton() {
+        
+        let vc = NewConversationViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        present(navVC, animated: true)
+    }
+    
+    // agrega la tabla los layouts para que se vea
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         validateAuth()
     }
 
@@ -59,6 +74,7 @@ class ConversationViewController: UIViewController {
     }
     private func fetchConversations() {
         // traer los dialogos
+        tableView.isHidden = false
     }
     
 }
@@ -71,8 +87,17 @@ extension ConversationViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = "Hola nico"
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let vc = ChatViewController()
+        vc.title = "nico dolinkue"
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
+        
+    }
 }
