@@ -165,12 +165,14 @@ class RegisterViewController: UIViewController {
                 return
             }
             
+            //MARK: ver error porque salta
+//            guard !exist else {
+//                //user already exist
+//                strongSelf.alertUserLoginError(message: "the user already exist")
+//                return
+//            }
+//
             
-            guard !exist else {
-                //user already exist
-                strongSelf.alertUserLoginError(message: "the user already exist")
-                return
-            }
             
             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { authDataResult, error in
                 
@@ -180,11 +182,28 @@ class RegisterViewController: UIViewController {
                 
                 
                 guard authDataResult != nil, error == nil else {
-                    print("error")
+                    print("error que onda")
                     return
                 }
-                
-                DataBaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email))
+                let chatUser = ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email)
+                DataBaseManager.shared.insertUser(with: chatUser) { success in
+                    if success {
+                        // upload photo
+                        guard let image = strongSelf.imageView.image, let data = image.pngData() else {
+                            return
+                        }
+                        let fileName = chatUser.profilePictureFileName
+                        StorageManager.shared.uploadProfilePicture(with: data, filename: fileName) { result in
+                            switch result {
+                            case .success(let dowloadUrl):
+                                UserDefaults.standard.set(dowloadUrl, forKey: "profile_picture_url")
+                                print("bajo la foto\(dowloadUrl)")
+                            case .failure(let error):
+                                print(error)
+                            }
+                        }
+                    }
+                }
                 
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
                 
