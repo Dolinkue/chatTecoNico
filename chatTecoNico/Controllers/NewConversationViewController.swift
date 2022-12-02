@@ -10,6 +10,8 @@ import JGProgressHUD
 
 class NewConversationViewController: UIViewController {
     
+    public var completion: (([String:String]) -> Void)?
+    
     private let spinner = JGProgressHUD(style: .dark)
     
     private var user = [[String:String]]()
@@ -86,7 +88,13 @@ extension NewConversationViewController: UITableViewDelegate, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
         // star chat
+        let targetUserDara = results[indexPath.row]
+        
+        dismiss(animated: true,completion: {
+            self.completion?(targetUserDara)
+        })
     }
     
 }

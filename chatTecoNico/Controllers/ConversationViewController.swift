@@ -13,6 +13,8 @@ class ConversationViewController: UIViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
     
+    private var chat = ""
+    
     private let tableView: UITableView = {
         let table = UITableView()
         table.isHidden = true
@@ -42,8 +44,25 @@ class ConversationViewController: UIViewController {
     @objc private func didTabComposeButton() {
         
         let vc = NewConversationViewController()
+        vc.completion = { [weak self] result in
+            self?.creatNewConversation(result: result)
+        }
         let navVC = UINavigationController(rootViewController: vc)
         present(navVC, animated: true)
+    }
+    
+    private func creatNewConversation(result: [String:String]) {
+        guard let name = result["name"], let email = result["email"] else {
+            return
+        }
+        
+        // mandamos a la sala de chat
+        let vc = ChatViewController(with: email)
+        vc.isNewConversation = true
+        self.chat = email
+        vc.title = name
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     // agrega la tabla los layouts para que se vea
@@ -94,7 +113,7 @@ extension ConversationViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let vc = ChatViewController()
+        let vc = ChatViewController(with: chat)
         vc.title = "nico dolinkue"
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
