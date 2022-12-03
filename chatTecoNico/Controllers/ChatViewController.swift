@@ -68,20 +68,26 @@ class ChatViewController: MessagesViewController, MessagesDataSource, MessagesLa
     
     public var isNewConversation = false
     public let otherUserEmail: String
-    
+    private let conversationId: String?
     private var messages = [Message]()
-    private var selfSender: Sender?  {
-        guard let email = UserDefaults.standard.value(forKey: "email") else {return nil}
-        return Sender(photoUrl: "",
-                      senderId: email as! String ,
-                      displayName: "carmela"
-        
-    )}
     
-    init(with email: String) {
+    private var selfSender: Sender?  {
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {return nil}
+        let safeEmail = DataBaseManager.safeEmail(emailAddress: email)
+        
+        return Sender(photoUrl: "",
+                      senderId: safeEmail,
+                      displayName: "me")
+    }
+    
+
+    
+    init(with email: String, id: String) {
         let safeEmail = DataBaseManager.safeEmail(emailAddress: email)
         self.otherUserEmail = safeEmail
+        self.conversationId = id
         super.init(nibName: nil, bundle: nil)
+
     }
     
     required init?(coder: NSCoder) {
@@ -99,12 +105,41 @@ class ChatViewController: MessagesViewController, MessagesDataSource, MessagesLa
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
         messagesCollectionView.reloadData()
+        print(messages)
         
     }
+    
+    private func listenForMessages(id: String, shouldScrollToBottom: Bool) {
+        DataBaseManager.shared.getAllMessagesForConversation(with: id, completion: { [weak self] result in
+            switch result {
+            case .success(let messages):
+                print("success in getting messages: \(messages)")
+                guard !messages.isEmpty else {
+                    print("messages are empty")
+                    return
+                }
+                self?.messages = messages
+
+                DispatchQueue.main.async {
+                    self?.messagesCollectionView.reloadDataAndKeepOffset()
+
+                    if shouldScrollToBottom {
+                        self?.messagesCollectionView.scrollToLastItem()
+                    }
+                }
+            case .failure(let error):
+                print("failed to get messages: \(error)")
+            }
+        })
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         messageInputBar.inputTextView.becomeFirstResponder()
+        if let conversationId = conversationId {
+            listenForMessages(id: conversationId, shouldScrollToBottom: true)
+        }
     }
     
     var currentSender: MessageKit.SenderType {
@@ -138,7 +173,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         if isNewConversation {
             // create convo in databse
             let message = Message(sender: selfSender!, messageId: messageId!, sentDate: Date(), kind: .text(text))
-            DataBaseManager.shared.createNewConversation(with: otherUserEmail, firstMessage: message) { success in
+            DataBaseManager.shared.createNewConversation(with: otherUserEmail, name: self.title ?? "User", firstMessage: message) { success in
                 if success {
                     print("msj send")
                 }else {
