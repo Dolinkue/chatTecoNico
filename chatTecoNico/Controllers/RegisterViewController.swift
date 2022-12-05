@@ -192,8 +192,8 @@ class RegisterViewController: UIViewController {
                         guard let image = strongSelf.imageView.image, let data = image.pngData() else {
                             return
                         }
-                        UserDefaults.standard.set(firstName, forKey: "name")
-                        print(UserDefaults.standard.value(forKey: "name"))
+                //        UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+                        
                         let fileName = chatUser.profilePictureFileName
                         StorageManager.shared.uploadProfilePicture(with: data, filename: fileName) { result in
                             switch result {
