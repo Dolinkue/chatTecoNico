@@ -361,32 +361,32 @@ extension DataBaseManager {
                         let date = ChatViewController.dateFormatter.date(from: dateString)else {
                             return nil
                     }
-                  //  var kind: MessageKind?
-//                    if type == "photo" {
-//                        // photo
-//                        guard let imageUrl = URL(string: content),
-//                        let placeHolder = UIImage(systemName: "plus") else {
-//                            return nil
-//                        }
-//                        let media = Media(url: imageUrl,
-//                                          image: nil,
-//                                          placeholderImage: placeHolder,
-//                                          size: CGSize(width: 300, height: 300))
-//                        kind = .photo(media)
-//                    }
-//                    else if type == "video" {
-//                        // photo
-//                        guard let videoUrl = URL(string: content),
-//                            let placeHolder = UIImage(named: "video_placeholder") else {
-//                                return nil
-//                        }
-//
-//                        let media = Media(url: videoUrl,
-//                                          image: nil,
-//                                          placeholderImage: placeHolder,
-//                                          size: CGSize(width: 300, height: 300))
-//                        kind = .video(media)
-//                    }
+                    var kind: MessageKind?
+                    if type == "photo" {
+                        // photo
+                        guard let imageUrl = URL(string: content),
+                        let placeHolder = UIImage(systemName: "plus") else {
+                            return nil
+                        }
+                        let media = Media(url: imageUrl,
+                                          image: nil,
+                                          placeholderImage: placeHolder,
+                                          size: CGSize(width: 300, height: 300))
+                        kind = .photo(media)
+                    }
+                    else if type == "video" {
+                        // video
+                        guard let videoUrl = URL(string: content),
+                            let placeHolder = UIImage(named: "video_placeholder") else {
+                                return nil
+                        }
+
+                        let media = Media(url: videoUrl,
+                                          image: nil,
+                                          placeholderImage: placeHolder,
+                                          size: CGSize(width: 300, height: 300))
+                        kind = .video(media)
+                    }
 //                    else if type == "location" {
 //                        let locationComponents = content.components(separatedBy: ",")
 //                        guard let longitude = Double(locationComponents[0]),
@@ -398,14 +398,14 @@ extension DataBaseManager {
 //                                                size: CGSize(width: 300, height: 300))
 //                        kind = .location(location)
 //                    }
-//                    else {
-//                        kind = .text(content)
-//                    }
+                    else {
+                        kind = .text(content)
+                    }
                     
                     
-//                    guard let finalKind = kind else {
-//                        return nil
-//                    }
+                    guard let finalKind = kind else {
+                        return nil
+                    }
 
                     let sender = Sender(photoUrl: "",
                                         senderId: senderEmail,
@@ -414,7 +414,7 @@ extension DataBaseManager {
                     return Message(sender: sender,
                                    messageId: messageID,
                                    sentDate: date,
-                                   kind: .text(content))
+                                   kind: finalKind)
                 })
 
                 completion(.success(messages))
