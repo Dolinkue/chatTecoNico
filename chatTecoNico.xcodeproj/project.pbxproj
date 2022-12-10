@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		829382962944D822004FD71E /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829382952944D822004FD71E /* NewConversationCell.swift */; };
 		82AA54C22935522A00F442D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AA54C12935522A00F442D6 /* AppDelegate.swift */; };
 		82AA54C42935522A00F442D6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AA54C32935522A00F442D6 /* SceneDelegate.swift */; };
 		82AA54C62935522A00F442D6 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AA54C52935522A00F442D6 /* ConversationViewController.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		829382952944D822004FD71E /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
 		82AA54BE2935522A00F442D6 /* chatTecoNico.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatTecoNico.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82AA54C12935522A00F442D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82AA54C32935522A00F442D6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				82AA5500293562A400F442D6 /* NewConversationViewController.swift */,
 				82AA55022935637A00F442D6 /* ProfileViewController.swift */,
 				82AA55182937B83000F442D6 /* ChatViewController.swift */,
+				829382952944D822004FD71E /* NewConversationCell.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82AA54F92935622900F442D6 /* LoginViewController.swift in Sources */,
+				829382962944D822004FD71E /* NewConversationCell.swift in Sources */,
 				82AA550529362B9100F442D6 /* Extencion.swift in Sources */,
 				82AA54FB2935623700F442D6 /* RegisterViewController.swift in Sources */,
 				82AA5501293562A400F442D6 /* NewConversationViewController.swift in Sources */,

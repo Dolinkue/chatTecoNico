@@ -25,5 +25,7 @@
 	<string>Please allow access to take a picture</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>dejame usar las fotos gato</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Please allow access to send audio and video</string>
 </dict>
 </plist>

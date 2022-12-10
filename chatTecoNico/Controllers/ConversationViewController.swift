@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import JGProgressHUD
+import SDWebImage
 
 struct Conversation {
     let id: String
@@ -88,10 +89,9 @@ class ConversationViewController: UIViewController {
         present(navVC, animated: true)
     }
     
-    private func creatNewConversation(result: [String:String]) {
-        guard let name = result["name"], let email = result["email"] else {
-            return
-        }
+    private func creatNewConversation(result: SearchResult) {
+        let name = result.name
+        let email = result.email
         
         // mandamos a la sala de chat
         let vc = ChatViewController(with: email, id: "0")
