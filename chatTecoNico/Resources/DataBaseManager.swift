@@ -50,7 +50,7 @@ extension DataBaseManager {
         safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
         // buscamos si el usuario existe
         database.child(safeEmail).observeSingleEvent(of: .value) { snapshot in
-            guard snapshot.value as? String != nil else {
+            guard snapshot.value as? [String:Any] != nil else {
                 completion(false)
                 return
                 
@@ -665,37 +665,37 @@ extension DataBaseManager {
         }
 
         public func conversationExists(iwth targetRecipientEmail: String, completion: @escaping (Result<String, Error>) -> Void) {
-//            let safeRecipientEmail = DataBaseManager.safeEmail(emailAddress: targetRecipientEmail)
-//            guard let senderEmail = UserDefaults.standard.value(forKey: "email") as? String else {
-//                return
-//            }
-//            let safeSenderEmail = DataBaseManager.safeEmail(emailAddress: senderEmail)
-//
-//            database.child("\(safeRecipientEmail)/conversations").observeSingleEvent(of: .value, with: { snapshot in
-//                guard let collection = snapshot.value as? [[String: Any]] else {
-//                    completion(.failure(DataBaseError.failedToFetch))
-//                    return
-//                }
-//
-//                // iterate and find conversation with target sender
-//                if let conversation = collection.first(where: {
-//                    guard let targetSenderEmail = $0["other_user_email"] as? String else {
-//                        return false
-//                    }
-//                    return safeSenderEmail == targetSenderEmail
-//                }) {
-//                    // get id
-//                    guard let id = conversation["id"] as? String else {
-//                        completion(.failure(DataBaseError.failedToFetch))
-//                        return
-//                    }
-//                    completion(.success(id))
-//                    return
-//                }
-//
-//                completion(.failure(DataBaseError.failedToFetch))
-//                return
-//            })
+            let safeRecipientEmail = DataBaseManager.safeEmail(emailAddress: targetRecipientEmail)
+            guard let senderEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+                return
+            }
+            let safeSenderEmail = DataBaseManager.safeEmail(emailAddress: senderEmail)
+
+            database.child("\(safeRecipientEmail)/conversations").observeSingleEvent(of: .value, with: { snapshot in
+                guard let collection = snapshot.value as? [[String: Any]] else {
+                    completion(.failure(DataBaseError.failedToFetch))
+                    return
+                }
+
+                // iterate and find conversation with target sender
+                if let conversation = collection.first(where: {
+                    guard let targetSenderEmail = $0["other_user_email"] as? String else {
+                        return false
+                    }
+                    return safeSenderEmail == targetSenderEmail
+                }) {
+                    // get id
+                    guard let id = conversation["id"] as? String else {
+                        completion(.failure(DataBaseError.failedToFetch))
+                        return
+                    }
+                    completion(.success(id))
+                    return
+                }
+
+                completion(.failure(DataBaseError.failedToFetch))
+                return
+            })
         }
 
     
