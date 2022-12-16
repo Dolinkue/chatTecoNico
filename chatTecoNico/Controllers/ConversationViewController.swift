@@ -48,6 +48,7 @@ class ConversationViewController: UIViewController {
         return label
     }()
     
+    private var loginObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,28 +56,45 @@ class ConversationViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(noConversationsLabel)
         setupTable()
-        fetchConversations()
-        startListeningForConversations()
+      //  fetchConversations()
+        startListeningForCOnversations()
     }
     
-    private func startListeningForConversations() {
-        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {return}
+    private func startListeningForCOnversations() {
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
+            return
+        }
+
+        if let observer = loginObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+
+        print("starting conversation fetch...")
+
         let safeEmail = DataBaseManager.safeEmail(emailAddress: email)
-        DataBaseManager.shared.getAllConversations(for: safeEmail) { [weak self]result in
+
+        DataBaseManager.shared.getAllConversations(for: safeEmail, completion: { [weak self] result in
             switch result {
-            case .success(let conversation):
-                guard !conversation.isEmpty else {
+            case .success(let conversations):
+                print("successfully got conversation models")
+                guard !conversations.isEmpty else {
+                    self?.tableView.isHidden = true
+                    self?.noConversationsLabel.isHidden = false
                     return
                 }
-                self?.conversations = conversation
-                
+                self?.noConversationsLabel.isHidden = true
+                self?.tableView.isHidden = false
+                self?.conversations = conversations
+
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
                 }
             case .failure(let error):
-                print("error\(error)")
+                self?.tableView.isHidden = true
+                self?.noConversationsLabel.isHidden = false
+                print("failed to get convos: \(error)")
             }
-        }
+        })
     }
     
     @objc private func didTapComposeButton() {
@@ -137,6 +155,7 @@ class ConversationViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+        noConversationsLabel.frame = CGRect(x: 10, y:(view.Height-100)/2 , width: view.width-20, height: 100)
     }
     
     override func viewDidAppear(_ animated: Bool) {
